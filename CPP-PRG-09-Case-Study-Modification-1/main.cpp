@@ -13,31 +13,42 @@
 
 using namespace std;
 
-void arrSelectSort(int *[], int);
+int *fillArray(int);
+int *arrSelectSort(int *[], int);
 void showArray(const int [], int);
 void showArrPtr(int *[], int);
 
 int main()
 {
-    const int NUM_DONATIONS = 15;
+//    const int NUM_DONATIONS = 15;
+//
+//    int donations[NUM_DONATIONS] = { 5, 100, 5, 25, 10,
+//                                     5, 25, 5, 5, 100,
+//                                     10, 15, 10, 5, 10 };
+//
+//    int *arrPtr[NUM_DONATIONS] = { nullptr, nullptr, nullptr, nullptr, nullptr,
+//                                   nullptr, nullptr, nullptr, nullptr, nullptr,
+//                                   nullptr, nullptr, nullptr, nullptr, nullptr };
+    int NUM_DONATIONS;
     
-    int donations[NUM_DONATIONS] = { 5, 100, 5, 25, 10,
-                                     5, 25, 5, 5, 100,
-                                     10, 15, 10, 5, 10 };
+    int *donations = nullptr;
+    int *arrPtr = nullptr;
     
-    int *arrPtr[NUM_DONATIONS] = { nullptr, nullptr, nullptr, nullptr, nullptr,
-                                   nullptr, nullptr, nullptr, nullptr, nullptr,
-                                   nullptr, nullptr, nullptr, nullptr, nullptr };
+    cout << "Please enter how many donations were made: ";
+    cin >> NUM_DONATIONS;
+    
+    donations = fillArray(NUM_DONATIONS);
+    arrPtr = new int[NUM_DONATIONS];
     
     for (int count = 0 ; count < NUM_DONATIONS ; count++)
     {
-        arrPtr[count] = &donations[count];
+        arrPtr[count] = donations[count];
     }
     
-    arrSelectSort(arrPtr, NUM_DONATIONS);
+    arrPtr = arrSelectSort(&arrPtr, NUM_DONATIONS);
     
     cout << "The donations, sorted in ascending order, are: \n";
-    showArrPtr(arrPtr, NUM_DONATIONS);
+    showArrPtr(&arrPtr, NUM_DONATIONS);
     
     cout << "The donations, in their original order, are: \n";
     showArray(donations, NUM_DONATIONS);
@@ -45,7 +56,22 @@ int main()
     return 0;
 }
 
-void arrSelectSort(int *arr[], int size)
+int *fillArray(int size)
+{
+    int *intArr = nullptr;
+    
+    intArr = new int[size];
+    
+    for(int i = 0 ; i < size ; i++)
+    {
+        cout << "Please enter donation number " << (i + 1) << ": ";
+        cin >> intArr[i];
+    }
+    
+    return intArr;
+}
+
+int *arrSelectSort(int *arr[], int size)
 {
     int startScan, minIndex;
     int *minElem;
@@ -65,6 +91,8 @@ void arrSelectSort(int *arr[], int size)
         arr[minIndex] = arr[startScan];
         arr[startScan] = minElem;
     }
+    
+    return *arr;
 }
 
 void showArray(const int arr[], int size)
