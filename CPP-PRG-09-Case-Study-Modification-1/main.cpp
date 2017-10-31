@@ -14,9 +14,9 @@
 using namespace std;
 
 int *fillArray(int);
-int *arrSelectSort(int *[], int);
+int *arrSelectSort(int *, int);
 void showArray(const int [], int);
-void showArrPtr(int *[], int);
+void showArrPtr(int *, int);
 
 int main()
 {
@@ -40,15 +40,10 @@ int main()
     donations = fillArray(NUM_DONATIONS);
     arrPtr = new int[NUM_DONATIONS];
     
-    for (int count = 0 ; count < NUM_DONATIONS ; count++)
-    {
-        arrPtr[count] = donations[count];
-    }
-    
-    arrPtr = arrSelectSort(&arrPtr, NUM_DONATIONS);
+    arrPtr = arrSelectSort(donations, NUM_DONATIONS);
     
     cout << "The donations, sorted in ascending order, are: \n";
-    showArrPtr(&arrPtr, NUM_DONATIONS);
+    showArrPtr(arrPtr, NUM_DONATIONS);
     
     cout << "The donations, in their original order, are: \n";
     showArray(donations, NUM_DONATIONS);
@@ -65,34 +60,38 @@ int *fillArray(int size)
     for(int i = 0 ; i < size ; i++)
     {
         cout << "Please enter donation number " << (i + 1) << ": ";
-        cin >> intArr[i];
+        cin >> *(intArr + i);
     }
     
     return intArr;
 }
 
-int *arrSelectSort(int *arr[], int size)
+int *arrSelectSort(int *arr, int size)
 {
     int startScan, minIndex;
-    int *minElem;
+    int *minElem = nullptr;
     
     for (startScan = 0 ; startScan < (size - 1) ; startScan++)
     {
         minIndex = startScan;
-        minElem = arr[startScan];
+        minElem = &arr[startScan];
+        
         for (int index = startScan + 1 ; index < size ; index++)
         {
-            if(*(arr[index]) < *minElem)
+            if(arr[index] < *minElem)
             {
-                minElem = arr[index];
+                minElem = &arr[index];
                 minIndex = index;
             }
         }
-        arr[minIndex] = arr[startScan];
-        arr[startScan] = minElem;
+        
+        swap(arr[minIndex], arr[startScan]);
+//        arr[minIndex] = arr[startScan];
+//        arr[startScan] = minElem;
     }
     
-    return *arr;
+    
+    return arr;
 }
 
 void showArray(const int arr[], int size)
@@ -104,11 +103,20 @@ void showArray(const int arr[], int size)
     cout << endl;
 }
 
-void showArrPtr(int *arr[], int size)
+void showArrPtr(int *arr, int size)
 {
     for (int count = 0 ; count < size ; count++)
     {
-        cout << *(arr[count]) << " ";
+        cout << *(arr + count) << " ";
     }
     cout << endl;
+}
+
+void swap(int *intA, int *intB)
+{
+    int *intTemp = nullptr;
+    
+    intTemp = intA;
+    intA = intB;
+    intB = intTemp;
 }
