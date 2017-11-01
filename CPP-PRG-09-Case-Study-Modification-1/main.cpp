@@ -13,11 +13,12 @@
 
 using namespace std;
 
-int *fillArray(int);
-void copyArrays(int *, int *, int);
-int *arrSelectSort(int *, int);
-void showArray(const int [], int);
-void showArrPtr(int *, int);
+int *getArraySize();
+int *fillArray(int *);
+void copyArrays(int *, int *, int *);
+int *arrSelectSort(int *, int *);
+void showArray(const int [], int *);
+void showArrPtr(int *, int *);
 
 int main()
 {
@@ -30,16 +31,15 @@ int main()
 //    int *arrPtr[NUM_DONATIONS] = { nullptr, nullptr, nullptr, nullptr, nullptr,
 //                                   nullptr, nullptr, nullptr, nullptr, nullptr,
 //                                   nullptr, nullptr, nullptr, nullptr, nullptr };
-    int NUM_DONATIONS;
+    int *NUM_DONATIONS = nullptr;
     
     int *donations = nullptr;
     int *arrPtr = nullptr;
     
-    cout << "Please enter how many donations were made: ";
-    cin >> NUM_DONATIONS;
+    NUM_DONATIONS = getArraySize();
     
     donations = fillArray(NUM_DONATIONS);
-    arrPtr = new int[NUM_DONATIONS];
+    arrPtr = new int[*NUM_DONATIONS];
     
     copyArrays(arrPtr, donations, NUM_DONATIONS);
     
@@ -54,13 +54,32 @@ int main()
     return 0;
 }
 
-int *fillArray(int size)
+int *getArraySize()
+{
+    int *intNumDonations = nullptr;
+    
+    intNumDonations = new int;
+    
+    cout << "Please enter how many donations were made: ";
+    cin >> *intNumDonations;
+    while(!cin || *intNumDonations <= 1 || *intNumDonations >= 100)
+    {
+        cout << "Enter an array size between 2 and 100: ";
+        cin.clear();
+        cin.ignore();
+        cin >> *intNumDonations;
+    }
+    
+    return intNumDonations;
+}
+
+int *fillArray(int *size)
 {
     int *intArr = nullptr;
     
-    intArr = new int[size];
+    intArr = new int[*size];
     
-    for(int i = 0 ; i < size ; i++)
+    for(int i = 0 ; i < *size ; i++)
     {
         cout << "Please enter donation number " << (i + 1) << ": $";
         cin >> *(intArr + i);
@@ -76,25 +95,25 @@ int *fillArray(int size)
     return intArr;
 }
 
-void copyArrays(int *arr01, int *arr02, int size)
+void copyArrays(int *arr01, int *arr02, int *size)
 {
-    for (int i = 0 ; i < size ; i++)
+    for (int i = 0 ; i < *size ; i++)
     {
         arr01[i] = arr02[i];
     }
 }
 
-int *arrSelectSort(int *arr, int size)
+int *arrSelectSort(int *arr, int *size)
 {
     int startScan, minIndex;
     int *minElem = nullptr;
     
-    for (startScan = 0 ; startScan < (size - 1) ; startScan++)
+    for (startScan = 0 ; startScan < (*size - 1) ; startScan++)
     {
         minIndex = startScan;
         minElem = &arr[startScan];
         
-        for (int index = startScan + 1 ; index < size ; index++)
+        for (int index = startScan + 1 ; index < *size ; index++)
         {
             if(arr[index] < *minElem)
             {
@@ -104,26 +123,24 @@ int *arrSelectSort(int *arr, int size)
         }
         
         swap(arr[minIndex], arr[startScan]);
-//        arr[minIndex] = arr[startScan];
-//        arr[startScan] = minElem;
     }
     
     
     return arr;
 }
 
-void showArray(const int arr[], int size)
+void showArray(const int arr[], int *size)
 {
-    for (int count = 0 ; count < size ; count++)
+    for (int count = 0 ; count < *size ; count++)
     {
         cout << "$" << arr[count] << " ";
     }
     cout << endl;
 }
 
-void showArrPtr(int *arr, int size)
+void showArrPtr(int *arr, int *size)
 {
-    for (int count = 0 ; count < size ; count++)
+    for (int count = 0 ; count < *size ; count++)
     {
         cout << "$" << *(arr + count) << " ";
     }
