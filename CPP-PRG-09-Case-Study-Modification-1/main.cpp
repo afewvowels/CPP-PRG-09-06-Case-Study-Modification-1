@@ -62,8 +62,15 @@ int *fillArray(int size)
     
     for(int i = 0 ; i < size ; i++)
     {
-        cout << "Please enter donation number " << (i + 1) << ": ";
+        cout << "Please enter donation number " << (i + 1) << ": $";
         cin >> *(intArr + i);
+        while(!cin || *(intArr + i) <= 0 || *(intArr + i) >= 1000)
+        {
+            cout << "Please enter a value between $0 and $1,000: $";
+            cin.clear();
+            cin.ignore();
+            cin >> *(intArr + i);
+        }
     }
     
     return intArr;
@@ -109,7 +116,7 @@ void showArray(const int arr[], int size)
 {
     for (int count = 0 ; count < size ; count++)
     {
-        cout << arr[count] << " ";
+        cout << "$" << arr[count] << " ";
     }
     cout << endl;
 }
@@ -118,7 +125,7 @@ void showArrPtr(int *arr, int size)
 {
     for (int count = 0 ; count < size ; count++)
     {
-        cout << *(arr + count) << " ";
+        cout << "$" << *(arr + count) << " ";
     }
     cout << endl;
 }
